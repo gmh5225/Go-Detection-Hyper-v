@@ -4,7 +4,7 @@ A simple Go program that detects whether the current Windows system is running i
 
 ## Install
 ``
-go install github.com/gmh5225/Go-Detection-Hyper-v@v0.0.2
+go install github.com/gmh5225/Go-Detection-Hyper-v@v0.0.3
 ``
 
 ## Uninstall
