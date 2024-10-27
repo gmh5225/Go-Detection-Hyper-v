@@ -2,6 +2,21 @@
 
 A simple Go program that detects whether the current Windows system is running inside a Hyper-V virtual machine environment using CPUID instruction.
 
+## Install
+``
+go install github.com/gmh5225/Go-Detection-Hyper-v@v0.0.1
+``
+
+## Uninstall
+``
+where/which Go-Detection-Hyper-v
+``
+
+## Clean module cache
+``
+go clean -modcache
+``
+
 ## How It Works
 
 The program uses the CPUID instruction to:
