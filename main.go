@@ -44,9 +44,6 @@ const (
 	CPUID_HV_INTERFACE                = 0x40000003
 )
 
-//go:noescape
-func cpuidex(leaf, subleaf uint32) (eax, ebx, ecx, edx uint32)
-
 // isHyperVSignature checks if the buffer contains Hyper-V signature
 func isHyperVSignature(buf []byte) bool {
 	return *(*uint32)(unsafe.Pointer(&buf[0])) == MS_HV_SIGNATURE_1 &&
