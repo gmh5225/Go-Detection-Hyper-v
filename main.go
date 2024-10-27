@@ -27,11 +27,10 @@ func DetectHyperV() bool {
 		*(*uint32)(unsafe.Pointer(&buf[8])) == 0x76482074 {
 
 		// Get feature flags
-		eax, ebx, _, _ := cpuidex(0x40000003, 0)
+		_, ebx, _, _ := cpuidex(0x40000003, 0)
 
 		// Check specific bits
-		if ((eax & 0x00001000) == 0) &&
-			((ebx & 0x00000800) == 0) &&
+		if ((ebx & 0x00000800) == 0) &&
 			((ebx & 0x00000001) == 0) &&
 			((ebx & 0x00000040) == 0) {
 			ret = true
