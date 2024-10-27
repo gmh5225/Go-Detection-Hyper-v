@@ -36,6 +36,9 @@ jobs:
             dep ensure
         fi
 
+    - name: Run Tests
+      run: go test -v -tags=test ./...
+
     - name: Build
       env:
         GOOS: ${{ matrix.goos }}
