@@ -37,5 +37,5 @@ The detection is performed by:
 ## Output
 
 The program will output one of two messages:
-- "Running in Hyper-V environment"
-- "Not running in Hyper-V environment"
+- "Running in Hyper-V environment(Guest)"
+- "Not running in Hyper-V environment(Guest)"
