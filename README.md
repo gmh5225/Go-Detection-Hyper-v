@@ -39,3 +39,7 @@ The detection is performed by:
 The program will output one of two messages:
 - "Running in Hyper-V environment(Guest)"
 - "Not running in Hyper-V environment(Guest)"
+
+## Thanks
+- https://x.com/sixtyvividtails/status/1850373100665282775
+- https://x.com/sixtyvividtails/status/1850396353765019739
