@@ -4,7 +4,7 @@ A simple Go program that detects whether the current Windows system is running i
 
 ## Install
 ``
-go install github.com/gmh5225/Go-Detection-Hyper-v@v0.0.2
+go install github.com/gmh5225/Go-Detection-Hyper-v@v0.0.3
 ``
 
 ## Uninstall
@@ -39,3 +39,7 @@ The detection is performed by:
 The program will output one of two messages:
 - "Running in Hyper-V environment(Guest)"
 - "Not running in Hyper-V environment(Guest)"
+
+## Thanks
+- https://x.com/sixtyvividtails/status/1850373100665282775
+- https://x.com/sixtyvividtails/status/1850396353765019739
