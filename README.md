@@ -1,6 +1,6 @@
 # Hyper-V Detection Tool
 
-A simple Go program that detects whether the current Windows system is running inside a Hyper-V virtual machine environment using CPUID instruction.
+A simple Go program that detects whether the current Windows system is running inside a Hyper-V virtual machine environment(Guest) using CPUID instruction.
 
 ## Install
 ``
