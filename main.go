@@ -67,8 +67,8 @@ func DetectHyperV() bool {
 }
 
 func main() {
-	isHyperV := DetectHyperV()
-	if isHyperV {
+	isHyperVGuest := DetectHyperV()
+	if isHyperVGuest {
 		fmt.Println("[+] Running in Hyper-V(Guest) environment")
 	} else {
 		fmt.Println("[-] Not running in Hyper-V(Guest) environment")
