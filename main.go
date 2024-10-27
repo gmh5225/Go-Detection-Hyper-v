@@ -31,44 +31,61 @@ const (
 	HV_START_VIRTUAL_PROCESSOR    = 0x00200000
 )
 
+// Microsoft Hv signature in hex
+const (
+	MS_HV_SIGNATURE_1 = 0x7263694D // "Micr"
+	MS_HV_SIGNATURE_2 = 0x666F736F // "osof"
+	MS_HV_SIGNATURE_3 = 0x76482074 // "t Hv"
+)
+
+// CPUID leaf values
+const (
+	CPUID_HV_VENDOR_AND_MAX_FUNCTIONS = 0x40000000
+	CPUID_HV_INTERFACE                = 0x40000003
+)
+
 //go:noescape
 func cpuidex(leaf, subleaf uint32) (eax, ebx, ecx, edx uint32)
 
-func DetectHyperV() bool {
-	ret := false
+// isHyperVSignature checks if the buffer contains Hyper-V signature
+func isHyperVSignature(buf []byte) bool {
+	return *(*uint32)(unsafe.Pointer(&buf[0])) == MS_HV_SIGNATURE_1 &&
+		*(*uint32)(unsafe.Pointer(&buf[4])) == MS_HV_SIGNATURE_2 &&
+		*(*uint32)(unsafe.Pointer(&buf[8])) == MS_HV_SIGNATURE_3
+}
 
+// hasRequiredFeatures checks if the required features are present
+func hasRequiredFeatures(ebx uint32) bool {
+	return (ebx&HV_DEBUGGING) == 0 &&
+		(ebx&HV_CREATE_PARTITIONS) == 0 &&
+		(ebx&HV_CREATE_PORT) == 0
+}
+
+func DetectHyperV() bool {
 	// Get Vendor String
 	buf := make([]byte, 13)
-	_, ebx, ecx, edx := cpuidex(0x40000000, 0)
+	_, ebx, ecx, edx := cpuidex(CPUID_HV_VENDOR_AND_MAX_FUNCTIONS, 0)
 
-	// Copy vendor string to buf
+	// Copy vendor string to buffer
 	*(*uint32)(unsafe.Pointer(&buf[0])) = ebx
 	*(*uint32)(unsafe.Pointer(&buf[4])) = ecx
 	*(*uint32)(unsafe.Pointer(&buf[8])) = edx
 	buf[12] = 0
 
-	// Check if it's "Microsoft Hv"
-	if *(*uint32)(unsafe.Pointer(&buf[0])) == 0x7263694D &&
-		*(*uint32)(unsafe.Pointer(&buf[4])) == 0x666F736F &&
-		*(*uint32)(unsafe.Pointer(&buf[8])) == 0x76482074 {
-
-		// Get feature flags
-		_, ebx, _, _ := cpuidex(0x40000003, 0)
-
-		// Check specific bits
-		if ((ebx & HV_DEBUGGING) == 0) &&
-			((ebx & HV_CREATE_PARTITIONS) == 0) &&
-			((ebx & HV_CREATE_PORT) == 0) {
-			ret = true
-		}
+	// Return false if not Hyper-V signature
+	if !isHyperVSignature(buf) {
+		return false
 	}
 
-	return ret
+	// Get feature flags
+	_, ebx, _, _ = cpuidex(CPUID_HV_INTERFACE, 0)
+
+	// Check required features
+	return hasRequiredFeatures(ebx)
 }
 
 func main() {
-	isHyperV := DetectHyperV()
-	if isHyperV {
+	if isHyperVGuest := DetectHyperV(); isHyperVGuest {
 		fmt.Println("[+] Running in Hyper-V(Guest) environment")
 	} else {
 		fmt.Println("[-] Not running in Hyper-V(Guest) environment")
